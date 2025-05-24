@@ -223,28 +223,30 @@ def parse_resolution(r):
 
 if __name__ == "__main__":
     CHARACTERS = list(string.ascii_letters) + list(string.digits) + list(string.punctuation)
-    parser = argparse.ArgumentParser(description="convert videos into ascii movies")
+    parser = argparse.ArgumentParser(description="convert videos into ascii movies", formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument("video_path", help="Path to the video file.")
     parser.add_argument("font_path",help="Path to a ttf or otf font file. (Monospace fonts are recommended)")
     parser.add_argument("output_path", help="Path to save the ASCII movie.")
     parser.add_argument("--resolution", help="Resolution of the ASCII movie. (Default: 720x1280)", default="720x1280", type=parse_resolution)
     parser.add_argument("--min-font-size", help="Minimum font size in pixels. (Default: 8)", default=8, type=int)
     parser.add_argument("--max-font-size", help="Maximum font size in pixels. (Default: 24)", default=24, type=int)
-    parser.add_argument("--color",choices=["BW","grey", "red", "green", "blue","16","256","true"],default="BW",help="""The Output Color: \n
-    BW: Black and White \n
-    grey: Greyscale \n
-    red: Redscale \n
-    green: Greenscale \n
-    blue: Bluescale \n
-    16: 16 Color ansi palette \n
-    256: 256 Color ansi palette \n
-    """)
+    parser.add_argument("--color", choices=["BW","grey", "red", "green", "blue","16","256","true"],default="BW",help='''The Output Color: 
+    BW: Black and White 
+    grey: Greyscale 
+    red: Redscale 
+    green: Greenscale 
+    blue: Bluescale 
+    16: 16 Color ansi palette 
+    256: 256 Color ansi palette 
+    true: Same color scheme as the original
+    (default: grey)
+   ''') 
     parser.add_argument("--background-color",type=rgb_color,help="The Background Color: (Default: 0,0,0)",default="0,0,0")
-    parser.add_argument("--no-audio", help="Do not transcode the audio.")
-    parser.add_argument("--no-subtitles", help="Do not transcode the subtitles.")
+    parser.add_argument("--no-audio", help="Do not transcode the audio.", action=argparse.BooleanOptionalAction)
+    parser.add_argument("--no-subtitles", help="Do not transcode the subtitles.", action=argparse.BooleanOptionalAction)
     parser.add_argument("--fps",type=int,help="fps to transcode the video to (default: same as original)")
     parser.add_argument("--characters",help="Characters to be used. (Default: all keyboard characters)",default= string.ascii_letters + string.digits + string.punctuation + " ")
-    parser.add_argument("--show-ffmpeg",help="Show the ffmpeg output.")
+    parser.add_argument("--show-ffmpeg",help="Show the ffmpeg output.", action=argparse.BooleanOptionalAction)
     args = parser.parse_args()
 
     CHARACTERS = list(args.characters)
